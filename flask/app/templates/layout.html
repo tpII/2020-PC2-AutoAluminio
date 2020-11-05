@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/font-awesome.min.css') }}" />
+    {% endblock %}
+  </head>
+  
+  <body height:="100">
+    <nav class="navbar navbar-light navbar-expand-md d-flex d-xl-flex" style="background-color: #ffffff;">
+      <div class="container-fluid"><a class="navbar-brand text-center d-xl-flex" href="#">Vehículo con “Fin de Carrera”</a></div>
+    </nav>
+    <hr style="margin-top: 0px;margin-left: 0px;margin-bottom: 0px;">
+    {% block content %} {% endblock %}
+    {% block footer %} {% endblock %}
+    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

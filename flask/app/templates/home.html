@@ -1,0 +1,30 @@
+{% extends "layout.html" %} 
+
+{% block title %}Home{% endblock %}
+
+{% block head %} {{ super() }} {% endblock %} 
+
+{% block content %}
+    <div class="container text-center" min-height:="100" overflow="auto" padding-bottom="150px">
+        <div class="card shadow-sm mt-3" style="background-color: rgb(255,255,255);">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-up" style="font-size: 4em;"></i></button></div>
+                </div>
+                <div class="row">
+                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-left" style="font-size: 4em;"></i></button></div>
+                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-right" style="font-size: 4em;"></i></button></div>
+                </div>
+                <div class="row">
+                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-down" style="font-size: 4em;"></i></button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block fooder %}
+    <footer style="margin-top: 36px;">
+        <div class="text-center"><small>Taller de proyecto 2 - 2020</small></div>
+    </footer>
+{% endblock %}
