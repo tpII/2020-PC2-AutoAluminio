@@ -24,7 +24,7 @@ class Servomotor:
                 pass
             # Imprime la velocidad
             self.get_speed()
-            time.sleep(5)
+            time.sleep(3)
 
     def get_speed(self):
         print(

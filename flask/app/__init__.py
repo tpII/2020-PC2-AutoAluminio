@@ -4,6 +4,7 @@ from config.config import config
 from .db import set_db
 from config.routes import set_routes
 
+from app.helpers.vehicle import get_vehicle
 
 def create_app(environment="development"):
     # Configuración inicial de la app
@@ -19,5 +20,7 @@ def create_app(environment="development"):
     # Establece las rutas que posee la app
     set_routes(app)
  
+    vehicle = get_vehicle()
+    vehicle.run()
     # Retornar la instancia de app configurada
     return app

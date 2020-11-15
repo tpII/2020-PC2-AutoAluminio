@@ -5,18 +5,22 @@
 {% block head %} {{ super() }} {% endblock %} 
 
 {% block content %}
+    
     <div class="container text-center" min-height:="100" overflow="auto" padding-bottom="150px">
+        <div>Posición ({{vehicle.get_position_x()}},{{vehicle.get_position_y()}}) - Estado parachoques: {{'Colisiono' if vehicle.get_parachoque_status()==True else 'No Colisiono'}}</div>
+        <div>Velocidad: {{vehicle.get_speed_servos()}}</div>
         <div class="card shadow-sm mt-3" style="background-color: rgb(255,255,255);">
             <div class="card-body">
                 <div class="row">
-                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-up" style="font-size: 4em;"></i></button></div>
+                    
+                    <div class="col"><a href="/1" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-up" style="font-size: 4em;"></i></button></a></div>
                 </div>
                 <div class="row">
-                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-left" style="font-size: 4em;"></i></button></div>
-                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-right" style="font-size: 4em;"></i></button></div>
+                    <div class="col"><a href="/4" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-left" style="font-size: 4em;"></i></button></a></div>
+                    <div class="col"><a href="/3" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-right" style="font-size: 4em;"></i></button></a></div>
                 </div>
                 <div class="row">
-                    <div class="col"><button class="btn btn-primary" type="button"><i class="fa fa-arrow-down" style="font-size: 4em;"></i></button></div>
+                    <div class="col"><a href="/2" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-down" style="font-size: 4em;"></i></button></a></div>
                 </div>
             </div>
         </div>
