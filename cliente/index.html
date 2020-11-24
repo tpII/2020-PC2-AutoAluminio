@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+  </head>
+  
+  <body height:="100">
+    <div id="app">
+    <nav class="navbar navbar-light navbar-expand-md d-flex d-xl-flex" style="background-color: #ffffff;">
+      <div class="container-fluid" ><a class="navbar-brand text-center d-xl-flex" href="#">{{ title }}</a></div>
+    </nav>
+    <hr style="margin-top: 0px;margin-left: 0px;margin-bottom: 0px;">
+    <div class="container text-center" min-height:="100" overflow="auto" padding-bottom="150px">
+        <div>Posición ({{vehicle_status.position_x}},{{vehicle_status.position_y}}) - Estado parachoques: {{vehicle_status.bumper_status}}</div>
+        <div>Velocidad: {{vehicle_status.speed}} m/s - Motor 1: {{vehicle_status.speed_motor_1}} rpm - Motor 2: {{vehicle_status.speed_motor_2}} rpm</div>
+        <div class="card shadow-sm mt-3" style="background-color: rgb(255,255,255);">
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col"><a v-on:click="control_vehicle(1)" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-up" style="font-size: 4em;"></i></button></a></div>
+                </div>
+                <div class="row">
+                    <div class="col"><a v-on:click="control_vehicle(4)" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-left" style="font-size: 4em;"></i></button></a></div>
+                    <div class="col"><a v-on:click="control_vehicle(3)" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-right" style="font-size: 4em;"></i></button></a></div>
+                </div>
+                <div class="row">
+                    <div class="col"><a v-on:click="control_vehicle(2)" ><button class="btn btn-primary" type="button"><i class="fa fa-arrow-down" style="font-size: 4em;"></i></button></a></div>
+                </div>
+            </div>
+        </div>
+        <table class="table" style="margin-top: 10px;">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Version</th>
+                <th scope="col">Motor_1</th>
+                <th scope="col">Motor_2</th>
+                <th scope="col">Velocidad</th>
+                <th scope="col">Colisionó</th>
+                <th scope="col">Fecha y tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+                <tr v-for="(data,i) in historical" :key="i">
+                    <th scope="row">{{ data.version  }}</th>  
+                    <td>{{ data.motor_1 }}</td>
+                    <td>{{ data.motor_2 }}</td>
+                    <td>{{ data.speed }}</td>
+                    <td>{{ data.bumper_status }}</td>
+                    <td>{{ data.created_at }}</td>
+                 </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <footer style="margin-top: 36px;">
+        <div class="text-center"><small>{{message_footer}}</small></div>
+    </footer>
+</div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            /* Datos que seran utilizados en la aplicación */
+            data: {
+              title: 'Vehículo con “Fin de Carrera”',
+              message_footer: 'Taller de proyecto 2 - 2020',
+              timer: '',
+              timer2: '',
+              vehicle_status: {
+                "position_x": 0,
+                "position_y": 0,
+                "bumper_status": false,
+                "speed_motor_1": 45,
+                "speed_motor_2": 45,
+                "speed": 100
+              },
+              historical: [{
+                'version': 0,
+                'motor_1': 0,
+                'motor_2': 0,
+                'speed': 0,
+                'bumper_status': false,
+                'created_at': '24/11/2020-13:20:00'
+              }]
+            },
+            methods: {
+                /* Realiza un POST a la url de control del vehiculo con la accion a realizar */
+                control_vehicle: function (code) { 
+                    axios({
+                        method: 'post',
+                        url: 'http://127.0.0.1:5000/api/vehicle/control/' + code
+                    });   
+                },
+                /* Realiza la busqueda del estatus del vehiculo */
+                fetchStatus: function(){
+                    axios({
+                        method: 'get',
+                        url: 'http://127.0.0.1:5000/api/vehicle/status'
+                      })
+                        .then(function (response) {
+                            app.vehicle_status = response.data.data;
+                        })
+                        .catch(e => {
+                            console.log("Error")
+                            console.log(e)
+                            this.error.push(e)
+                        });
+                    
+                },
+                /* Realiza la busqueda del historial del vehiculo */
+                fetchHistorical: function(){
+                    axios({
+                        method: 'get',
+                        url: 'http://127.0.0.1:5000/api/vehicle/historical'
+                      })
+                        .then(function (response) {
+                            app.historical = response.data.data;
+                            console.log(app.historical)
+                        })
+                        .catch(e => {
+                            console.log("Error")
+                            console.log(e)
+                            this.error.push(e)
+                        });
+                    
+                },
+                /* Cancela la ejecución periodica de actualización de los datos */
+                cancelAutoUpdate: function(){ 
+                    clearInterval(this.timer) 
+                    clearInterval(this.timer2) 
+                }
+            },
+            /* Al iniciar la aplicación buscar los datos del status e historial del vehiculo */
+            created(){
+                this.fetchStatus();
+                this.fetchHistorical();
+                this.timer = setInterval(this.fetchStatus, 1000)
+                this.timer2 = setInterval(this.fetchHistorical, 1500)  
+            },
+            /* Despues de cerrada la aplicación limpia los timers */
+            beforeDestroy () {
+                clearInterval(this.timer)
+                clearInterval(this.timer2)
+            }
+          })
+    </script>
+  </body>
+</html>

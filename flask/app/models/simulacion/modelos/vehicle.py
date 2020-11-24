@@ -5,7 +5,9 @@ import concurrent.futures
 
 from .servo import Servomotor
 from .parachoque import Parachoque
+from app.models.vehicle import Vehicle
 
+from datetime import datetime
 
 class Vehicle:
     def __init__(self):
@@ -75,6 +77,12 @@ class Vehicle:
 
     def get_speed_servos(self):
         return f"Servo_1: {self._servo1.speed} Servo_2: {self._servo2.speed}"
+
+    def get_speed_motor_1(self):
+        return self._servo1.speed
+    
+    def get_speed_motor_2(self):
+        return self._servo2.speed
 
     def get_parachoque_queue(self):
         return self._parachoque_queue

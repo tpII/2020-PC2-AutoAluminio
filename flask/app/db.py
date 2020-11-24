@@ -14,4 +14,3 @@ def set_db(app):
     seeder.init_app(app, db)
     with app.app_context():  # Crea un contexto de aplicación
         db.create_all() # Crea las tablas de la base de datos
-    
