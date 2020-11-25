@@ -20,7 +20,8 @@ def create_app(environment="development"):
     # Establece las rutas que posee la app
     set_routes(app)
 
+    # Inicializa el hilo
     start_threads(app)
- 
+
     # Retornar la instancia de app configurada
     return app

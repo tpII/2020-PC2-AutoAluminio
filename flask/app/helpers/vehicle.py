@@ -1,4 +1,4 @@
-from app.models.simulacion.modelos.vehicle import Vehicle
+from app.models.simulacion.modelos.vehicle_oo2 import Vehicle
 
 vehicle = Vehicle()
 

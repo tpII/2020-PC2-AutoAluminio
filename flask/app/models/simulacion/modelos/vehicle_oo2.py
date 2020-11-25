@@ -12,41 +12,25 @@ class Vehicle:
     def __init__(self):
         self._position_y = 20
         self._position_x = 20
-        # Estados: [0]: Stop [1]:Up [2]: Down [3]:right [4]:left [5]: girando
-        self._state = 0
+        # Estados: [1]:Up [2]: Down [3]:right [4]:left 
+        self._state = 1
+        self._stop = True
+        self._speed = 0
 
-        # Se instancian los modelos
-        self._servo1 = Servomotor(90, "1")
-        self._servo2 = Servomotor(90, "2")
-        self._parachoque = Parachoque()
-
-        # Se crean las colas que utilizaran los hilos para comunicarse
-        self._servo1_queue = queue.Queue()
-        self._servo2_queue = queue.Queue()
-        self._parachoque_queue = queue.Queue()
+        # Elementos que componen el vehiculo
+        self._motor_1 = 90
+        self._motor_2 = 90
+        self._parachoque = False
 
     def run(self):
-
-        # Se crean los hilos y se ejecutan
-        threading.Thread(target=self._servo1.loop,
-                         args=(self._servo1_queue,), daemon=True).start()
-        threading.Thread(target=self._servo2.loop,
-                         args=(self._servo2_queue,), daemon=True).start()
-        threading.Thread(target=self._parachoque.loop, args=(
-            self._parachoque_queue,), daemon=True).start()
-        threading.Thread(target=self.loop,
-                         args=(), daemon=True).start()
-
+        threading.Thread(target=self.loop,args=(), daemon=True).start()
         self.stop()
 
     def loop(self):
-
         while True:
-            print(
-                f"Posición del vehiculo: ({self._position_x},{self._position_y})")
-
+            
             if (self._position_y < 23 and self._position_y > 17 and self._position_x < 23 and self._position_x > 17):
-                if self._state != 0:
+                if not self._stop:
                     if self._state == 1:
                         self._position_y += 1
                     if self._state == 2:
@@ -57,12 +41,13 @@ class Vehicle:
                         self._position_x -= 1
             else:
                 self._colision()
-
-            time.sleep(10)
-
+            time.sleep(1)
+        
     def _colision(self):
         print("Se produjo una colision")
-        self._parachoque_queue.put(True)
+        self._parachoque = True 
+        self.stop()
+        time.sleep(1)
         if self._state == 1:
             self._position_y -= 1
         if self._state == 2:
@@ -71,23 +56,19 @@ class Vehicle:
             self._position_x -= 1
         if self._state == 4:
             self._position_x += 1
-        self.stop()
-        self._parachoque_queue.put(False)
+        self._parachoque = False
 
-    def get_speed_servos(self):
-        return f"Servo_1: {self._servo1.speed} Servo_2: {self._servo2.speed}"
+    def get_speed(self):
+        return self._speed
 
     def get_speed_motor_1(self):
-        return self._servo1.speed
+        return self._motor_1
     
     def get_speed_motor_2(self):
-        return self._servo2.speed
-
-    def get_parachoque_queue(self):
-        return self._parachoque_queue
+        return self._motor_2
 
     def get_parachoque_status(self):
-        return self._parachoque.status
+        return self._parachoque
 
     def get_position_y(self):
         return self._position_y
@@ -96,23 +77,27 @@ class Vehicle:
         return self._position_x
 
     def _forward(self):
-        self._servo1_queue.put(110)
-        self._servo2_queue.put(66)
+        self._motor_1 = 110
+        self._motor_2 = 66
+        self._speed = 1
+        self._stop = False
         time.sleep(1)
 
     def _turnRight(self):
-        self._servo1_queue.put(180)
-        self._servo2_queue.put(85)
+        self._motor_1 = 180
+        self._motor_2 = 85
         time.sleep(1)
 
     def _turnLeft(self):
-        self._servo1_queue.put(95)
-        self._servo2_queue.put(0)
+        self._motor_1 = 95
+        self._motor_2 = 0
+        time.sleep(1)
 
     def stop(self):
-        self._servo1_queue.put(90)
-        self._servo2_queue.put(90)
-        self._state = 0
+        self._motor_1 = 90
+        self._motor_2 = 90
+        self._speed = 0
+        self._stop = True
 
     def up(self):
         # Avanza hacia arriba
@@ -124,8 +109,9 @@ class Vehicle:
                 self._turnLeft()
             if self._state == 4:
                 self._turnRight()
-            self._forward()
             self._state = 1
+            self._forward()
+            
 
     def down(self):
         # Avanza hacia abajo
@@ -137,8 +123,9 @@ class Vehicle:
                 self._turnLeft()
             if self._state == 4:
                 self._turnRight()
-            self._forward()
             self._state = 2
+            self._forward()
+            
 
     def right(self):
         # Avanza hacia la derecha
@@ -150,8 +137,9 @@ class Vehicle:
             if self._state == 4:
                 self._turnLeft()
                 self._turnLeft()
-            self._forward()
             self._state = 3
+            self._forward()
+            
 
     def left(self):
         # Avanza hacia la izquierda
@@ -163,5 +151,6 @@ class Vehicle:
             if self._state == 3:
                 self._turnLeft()
                 self._turnLeft()
-            self._forward()
             self._state = 4
+            self._forward()
+            

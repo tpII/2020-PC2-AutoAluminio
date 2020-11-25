@@ -2,8 +2,8 @@ from datetime import datetime, date, time, timedelta
 from sqlalchemy import Date, DateTime, Time, cast, and_
 from sqlalchemy import func
 from app.db import db
-
-
+from sqlalchemy import cast, DateTime
+from sqlalchemy.sql import exists
 class Vehicle(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +15,9 @@ class Vehicle(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, unique=False)
 
     def save(self):
+
+        #if not db.session.query(exists().where( cast(Vehicle.created_at, DateTime) == cast(self.created_at, DateTime))).scalar():
+        
         if not self.id:
             db.session.add(self)
         db.session.commit()
@@ -33,4 +36,5 @@ class Vehicle(db.Model):
         query = Vehicle.query
         query = query.order_by(
             cast(Vehicle.created_at, DateTime).desc(), cast(Vehicle.created_at, DateTime).asc())
+        query = query.filter_by(version=Vehicle.max_version())
         return query.limit(quantity).all()

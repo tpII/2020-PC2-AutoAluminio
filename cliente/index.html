@@ -81,9 +81,9 @@
                 "position_x": 0,
                 "position_y": 0,
                 "bumper_status": false,
-                "speed_motor_1": 45,
-                "speed_motor_2": 45,
-                "speed": 100
+                "speed_motor_1": 0,
+                "speed_motor_2": 0,
+                "speed": 0
               },
               historical: [{
                 'version': 0,
@@ -146,7 +146,7 @@
                 this.fetchStatus();
                 this.fetchHistorical();
                 this.timer = setInterval(this.fetchStatus, 1000)
-                this.timer2 = setInterval(this.fetchHistorical, 1500)  
+                this.timer2 = setInterval(this.fetchHistorical, 1000)  
             },
             /* Despues de cerrada la aplicación limpia los timers */
             beforeDestroy () {
