@@ -46,7 +46,7 @@ def main():
                 print(f"Key Pressed: {pressedKey}")
         if done:
             break
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
