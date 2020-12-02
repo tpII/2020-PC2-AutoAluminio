@@ -39,7 +39,7 @@ def historical():
     response2 = jsonify({'data': array_json})
     response2.headers.set("Access-Control-Allow-Origin", "*")
     return response2
-    
+
 def control(code):
     vehicle = get_vehicle()
     if code == 0:

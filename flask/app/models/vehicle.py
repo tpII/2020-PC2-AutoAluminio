@@ -15,9 +15,6 @@ class Vehicle(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, unique=False)
 
     def save(self):
-
-        #if not db.session.query(exists().where( cast(Vehicle.created_at, DateTime) == cast(self.created_at, DateTime))).scalar():
-        
         if not self.id:
             db.session.add(self)
         db.session.commit()

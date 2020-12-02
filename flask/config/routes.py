@@ -10,7 +10,6 @@ def set_routes(app):
     # api vehiculo
     app.add_url_rule("/api/vehicle/status", "api_vehicle_status", vehicle.status)
     app.add_url_rule("/api/vehicle/historical", "api_vehicle_historical", vehicle.historical)
-    # app.add_url_rule("/api/vehicle/task", "api_vehicle_task", vehicle.task)
     app.add_url_rule("/api/vehicle/control/<int:code>", "api_vehicle_control",vehicle.control, methods=["POST"])
 
     # Handlers

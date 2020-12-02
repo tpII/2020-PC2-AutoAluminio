@@ -69,91 +69,91 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        var app = new Vue({
-            el: '#app',
-            /* Datos que seran utilizados en la aplicación */
-            data: {
-              title: 'Vehículo con “Fin de Carrera”',
-              message_footer: 'Taller de proyecto 2 - 2020',
-              timer: '',
-              timer2: '',
-              vehicle_status: {
-                "position_x": 0,
-                "position_y": 0,
-                "bumper_status": false,
-                "speed_motor_1": 0,
-                "speed_motor_2": 0,
-                "speed": 0
-              },
-              historical: [{
-                'version': 0,
-                'motor_1': 0,
-                'motor_2': 0,
-                'speed': 0,
-                'bumper_status': false,
-                'created_at': '24/11/2020-13:20:00'
-              }]
-            },
-            methods: {
-                /* Realiza un POST a la url de control del vehiculo con la accion a realizar */
-                control_vehicle: function (code) { 
-                    axios({
-                        method: 'post',
-                        url: 'http://127.0.0.1:5000/api/vehicle/control/' + code
-                    });   
-                },
-                /* Realiza la busqueda del estatus del vehiculo */
-                fetchStatus: function(){
-                    axios({
-                        method: 'get',
-                        url: 'http://127.0.0.1:5000/api/vehicle/status'
-                      })
-                        .then(function (response) {
-                            app.vehicle_status = response.data.data;
-                        })
-                        .catch(e => {
-                            console.log("Error")
-                            console.log(e)
-                            this.error.push(e)
-                        });
-                    
-                },
-                /* Realiza la busqueda del historial del vehiculo */
-                fetchHistorical: function(){
-                    axios({
-                        method: 'get',
-                        url: 'http://127.0.0.1:5000/api/vehicle/historical'
-                      })
-                        .then(function (response) {
-                            app.historical = response.data.data;
-                            console.log(app.historical)
-                        })
-                        .catch(e => {
-                            console.log("Error")
-                            console.log(e)
-                            this.error.push(e)
-                        });
-                    
-                },
-                /* Cancela la ejecución periodica de actualización de los datos */
-                cancelAutoUpdate: function(){ 
-                    clearInterval(this.timer) 
-                    clearInterval(this.timer2) 
-                }
-            },
-            /* Al iniciar la aplicación buscar los datos del status e historial del vehiculo */
-            created(){
-                this.fetchStatus();
-                this.fetchHistorical();
-                this.timer = setInterval(this.fetchStatus, 1000)
-                this.timer2 = setInterval(this.fetchHistorical, 1000)  
-            },
-            /* Despues de cerrada la aplicación limpia los timers */
-            beforeDestroy () {
-                clearInterval(this.timer)
-                clearInterval(this.timer2)
-            }
-          })
-    </script>
+var app = new Vue({
+  el: "#app",
+  /* Datos que seran utilizados en la aplicación */
+  data: {
+    title: "Vehículo con “Fin de Carrera”",
+    message_footer: "Taller de proyecto 2 - 2020",
+    timer: "",
+    timer2: "",
+    vehicle_status: {
+      position_x: 0,
+      position_y: 0,
+      bumper_status: false,
+      speed_motor_1: 0,
+      speed_motor_2: 0,
+      speed: 0,
+    },
+    historical: [
+      {
+        version: 0,
+        motor_1: 0,
+        motor_2: 0,
+        speed: 0,
+        bumper_status: false,
+        created_at: "24/11/2020-13:20:00",
+      },
+    ]
+  },
+  methods: {
+    /* Realiza un POST a la url de control del vehiculo con la accion a realizar */
+    control_vehicle: function (code) {
+      axios({
+        method: "post",
+        url: "http://127.0.0.1:5000/api/vehicle/control/" + code,
+      });
+    },
+    /* Realiza la busqueda del estatus del vehiculo */
+    fetchStatus: function () {
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:5000/api/vehicle/status",
+      })
+        .then(function (response) {
+          app.vehicle_status = response.data.data;
+        })
+        .catch((e) => {
+          console.log("Error");
+          console.log(e);
+          this.error.push(e);
+        });
+    },
+    /* Realiza la busqueda del historial del vehiculo */
+    fetchHistorical: function () {
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:5000/api/vehicle/historical",
+      })
+        .then(function (response) {
+          app.historical = response.data.data;
+          console.log(app.historical);
+        })
+        .catch((e) => {
+          console.log("Error");
+          console.log(e);
+          this.error.push(e);
+        });
+    },
+    /* Cancela la ejecución periodica de actualización de los datos */
+    cancelAutoUpdate: function () {
+      clearInterval(this.timer);
+      clearInterval(this.timer2);
+    },
+  },
+  /* Al iniciar la aplicación buscar los datos del status e historial del vehiculo */
+  created() {
+    this.fetchStatus();
+    this.fetchHistorical();
+    this.timer = setInterval(this.fetchStatus, 1000);
+    this.timer2 = setInterval(this.fetchHistorical, 1000);
+  },
+  /* Despues de cerrada la aplicación limpia los timers */
+  beforeDestroy() {
+    clearInterval(this.timer);
+    clearInterval(this.timer2);
+  },
+});
+</script>
   </body>
 </html>

@@ -99,7 +99,6 @@ class Vehicle:
         time.sleep(1)
             
     def stop(self):
-        print("STOP")
         self._motor_1 = 0
         self._motor_2 = 0
         self._speed = 0
