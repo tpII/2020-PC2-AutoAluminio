@@ -39,6 +39,23 @@ def historical():
     response2 = jsonify({'data': array_json})
     response2.headers.set("Access-Control-Allow-Origin", "*")
     return response2
+
+def export():
+    array_json = []
+    regs = Vehicle.all_max_version()
+    for veh in regs:
+        array_json.append({
+            'version': veh.version,
+            'motor_1': veh.motor_1,
+            'motor_2': veh.motor_2,
+            'speed':veh.speed,
+            'bumper_status': veh.bumper_status,
+            'created_at': veh.created_at.strftime("%d/%m/%Y-%H:%M:%S")
+        })
+    response2 = jsonify( {"data": array_json})
+    response2.headers.set("Access-Control-Allow-Origin", "*")
+    return response2
+    
     
 def control(code):
     vehicle = get_vehicle()

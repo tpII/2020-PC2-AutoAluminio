@@ -15,9 +15,7 @@ class Vehicle(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, unique=False)
 
     def save(self):
-
         #if not db.session.query(exists().where( cast(Vehicle.created_at, DateTime) == cast(self.created_at, DateTime))).scalar():
-        
         if not self.id:
             db.session.add(self)
         db.session.commit()
@@ -30,6 +28,14 @@ class Vehicle(db.Model):
     @staticmethod
     def max_version():
         return db.session.query(func.max(Vehicle.version)).scalar()
+
+    @staticmethod
+    def all_max_version():
+        query = Vehicle.query
+        query = query.order_by(
+            cast(Vehicle.created_at, DateTime).desc(), cast(Vehicle.created_at, DateTime).asc())
+        query = query.filter_by(version=Vehicle.max_version())
+        return query.all()
 
     @staticmethod
     def last(quantity):

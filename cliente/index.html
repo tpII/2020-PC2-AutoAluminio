@@ -35,6 +35,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group row mt-3">
+          <label class="col-sm-2 col-form-label">Nombre del archivo</label>
+          <div class="col-sm-8">
+            <input type="text" v-model="name_file" class="form-control" id="name" placeholder="Ingrese el nombre del archivo">
+          </div>
+          <div class="btn btn-outline-success my-2 my-sm-0"><a v-on:click="guardar('xls')">Exportar a Excel</span></a></div>
+        </div>
+        
+        
         <table class="table" style="margin-top: 10px;">
             <thead class="thead-dark">
               <tr>
@@ -68,6 +78,8 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://unpkg.com/export-from-json/dist/umd/index.min.js"></script>
     <script>
         var app = new Vue({
             el: '#app',
@@ -95,6 +107,30 @@
               }]
             },
             methods: {
+              guardar: function () {
+                const fileName = this.name_file;
+                const exportType = "xls";
+                if (this.name_file != ""){
+                  axios({
+                    method: "get",
+                    url: "http://127.0.0.1:5000/api/vehicle/export",
+                  })
+                    .then(function (response) {
+                      data = []
+                      response.data.data.forEach((item)=>{
+                        data.push(item)
+                      })
+                      window.exportFromJSON({ data, fileName, exportType });
+                    })
+                    .catch((e) => {
+                      console.log("Error");
+                      console.log(e);
+                      this.error.push(e);
+                    });
+                
+                }
+                  
+                },
                 /* Realiza un POST a la url de control del vehiculo con la accion a realizar */
                 control_vehicle: function (code) { 
                     axios({
