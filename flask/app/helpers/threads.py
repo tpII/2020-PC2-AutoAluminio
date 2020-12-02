@@ -14,10 +14,6 @@ def start_threads(app):
     
 
 def save_status(app):
-    print('Hilo:', 
-            threading.current_thread().getName(), 
-            'con identificador:', 
-            threading.current_thread().ident)
     with app.app_context():
         max_version = Vehicle.max_version()
         if max_version:

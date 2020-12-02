@@ -7,11 +7,17 @@ class Vehicle:
         # Cada posición en x e y son 0.5 metros
         self._position_y = 10
         self._position_x = 10
+
         # Radio de la rueda en metros
         self._wheel_radius = 0.0325
+
         # Estados:[0]:stop [1]:Up [2]: Down [3]:right [4]:left 
         self._state = 0
+
+        # Velocidad del vehiculo
         self._speed = 0
+
+        # Flasg que le indican al hilo de los motores que acción realizar
         self._flagStop = True
         self._flagDown = False
         self._flagUp = False
@@ -24,8 +30,10 @@ class Vehicle:
         self._parachoque = False
 
     def run(self):
+        # Pone en ejecución el hilo del vehiculo y de los motores
         threading.Thread(target=self._loop,args=(), daemon=True).start()
         threading.Thread(target=self._motores_loop,args=(), daemon=True).start()
+        # Se inicializa en estado stop
         self.stop()
 
     def _loop(self):
@@ -127,6 +135,7 @@ class Vehicle:
             self._flagLeft = True
             
     def _motores_loop(self):
+        # Se realiza la logica de control de los motores
         while True:
             if self._flagDown:
                 if self._state == 1:

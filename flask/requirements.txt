@@ -7,3 +7,4 @@ Flask-Seeder==1.1.1
 smallthon==1.0
 pylint==2.6.0
 autopep8==1.5.4
+Flask-Cors==3.0.9

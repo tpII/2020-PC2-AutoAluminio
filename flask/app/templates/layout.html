@@ -16,10 +16,12 @@
       <div class="container-fluid"><a class="navbar-brand text-center d-xl-flex" href="#">Vehículo con “Fin de Carrera”</a></div>
     </nav>
     <hr style="margin-top: 0px;margin-left: 0px;margin-bottom: 0px;">
+    
     {% block content %} {% endblock %}
     {% block footer %} {% endblock %}
     
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>Control del Vehiculo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -108,6 +108,7 @@
               }],
             },
             methods: {
+              /* Permite obtener toda la información de una version y exportarla a un archivo xls */
               guardar: function () {
                 const fileName = this.name_file;
                 const exportType = "xls";
@@ -128,9 +129,7 @@
                       console.log(e);
                       this.error.push(e);
                     });
-                
-                }
-                  
+                 }  
                 },
                 /* Realiza un POST a la url de control del vehiculo con la accion a realizar */
                 control_vehicle: function (code) { 
@@ -169,14 +168,8 @@
                             console.log("Error")
                             console.log(e)
                             this.error.push(e)
-                        });
-                    
+                        });  
                 },
-                /* Cancela la ejecución periodica de actualización de los datos */
-                cancelAutoUpdate: function(){ 
-                    clearInterval(this.timer) 
-                    clearInterval(this.timer2) 
-                }
             },
             /* Al iniciar la aplicación buscar los datos del status e historial del vehiculo */
             created(){
