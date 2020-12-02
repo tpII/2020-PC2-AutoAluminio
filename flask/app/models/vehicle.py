@@ -29,6 +29,14 @@ class Vehicle(db.Model):
         return db.session.query(func.max(Vehicle.version)).scalar()
 
     @staticmethod
+    def all_max_version():
+        query = Vehicle.query
+        query = query.order_by(
+            cast(Vehicle.created_at, DateTime).desc(), cast(Vehicle.created_at, DateTime).asc())
+        query = query.filter_by(version=Vehicle.max_version())
+        return query.all()
+
+    @staticmethod
     def last(quantity):
         query = Vehicle.query
         query = query.order_by(
