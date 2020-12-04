@@ -15,11 +15,14 @@
     <div id="app">
     <nav class="navbar navbar-light navbar-expand-md d-flex d-xl-flex" style="background-color: #ffffff;">
       <div class="container-fluid" ><a class="navbar-brand text-center d-xl-flex" href="#">{{ title }}</a></div>
+      <a  role="button" class="btn btn-info" href="http://127.0.0.1:5000/" >Documentación</a>
     </nav>
     <hr style="margin-top: 0px;margin-left: 0px;margin-bottom: 0px;">
     <div class="container text-center" min-height:="100" overflow="auto" padding-bottom="150px">
         <div>Posición ({{vehicle_status.position_x}},{{vehicle_status.position_y}}) - Estado parachoques: {{vehicle_status.bumper_status}}</div>
         <div>Velocidad: {{vehicle_status.speed}} m/s - Motor 1: {{vehicle_status.speed_motor_1}} rpm - Motor 2: {{vehicle_status.speed_motor_2}} rpm</div>
+        <div v-bind:class="classVehicle" style="border-radius:5px;padding:5px;">{{text_status}}</div>
+        
         <div class="card shadow-sm mt-3" style="background-color: rgb(255,255,255);">
             <div class="card-body">
                 <div class="row">
@@ -39,9 +42,15 @@
         <div class="form-group row mt-3">
           <label class="col-sm-2 col-form-label">Nombre del archivo</label>
           <div class="col-sm-8">
-            <input type="text" v-model="name_file" class="form-control" id="name" placeholder="Ingrese el nombre del archivo">
+            <input type="text" v-model="name_file" class="form-control" id="name" placeholder="Ingrese el nombre del archivo para poder exportar">
           </div>
-          <div class="btn btn-outline-success my-2 my-sm-0"><a v-on:click="guardar('xls')">Exportar a Excel</span></a></div>
+          <div v-if="name_file!=''">
+            <div class="btn btn-outline-success my-2 my-sm-0"><a v-on:click="guardar('xls')">Exportar a Excel</span></a></div>
+          </div>
+          <div v-else>
+            <div class="btn btn-outline-success my-2 my-sm-0 disabled" ><a >Exportar a Excel</span></a></div>
+          </div>
+          
         </div>
         
         
@@ -88,6 +97,7 @@
               title: 'Vehículo con “Fin de Carrera”',
               message_footer: 'Taller de proyecto 2 - 2020',
               name_file: "",
+              text_status: "El vehiculo se encuentra quieto",
               timer: '',
               timer2: '',
               vehicle_status: {
@@ -107,6 +117,26 @@
                 'created_at': '24/11/2020-13:20:00'
               }],
             },
+            computed: {
+              classVehicle: function () {
+                if(this.vehicle_status.speed_motor_1 == 0 && this.vehicle_status.bumper_status==false)
+                this.text_status='El vehiculo se encuentra quieto';
+
+              if(this.vehicle_status.speed_motor_1 != 0)
+                this.text_status='El vehiculo se encuentra en movimiento';
+
+              if(this.vehicle_status.bumper_status==true)
+                this.text_status='El vehiculo ha colisionado';
+
+                return {
+                  'active': true,
+                  'btn-primary': this.vehicle_status.speed_motor_1 == 0 && this.vehicle_status.bumper_status==false,
+                  'btn-warning': this.vehicle_status.speed_motor_1 != 0,
+                  'btn-danger':this.vehicle_status.bumper_status==true
+                }
+            },
+            
+          },
             methods: {
               /* Permite obtener toda la información de una version y exportarla a un archivo xls */
               guardar: function () {
