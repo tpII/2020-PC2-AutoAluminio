@@ -11,6 +11,13 @@ int pin5=12;
 
 char direccion;				            // Ingresada por teclado..
 
+void motorSetup(){
+  pinMode(pin1, OUTPUT);
+  pinMode(pin2, OUTPUT);
+  pinMode(pin3, OUTPUT);
+  pinMode(pin4, OUTPUT);
+}
+
 void setup(){
   Serial.begin(9600);		           	// bits por seg
   motorSetup();					        // se configuran como salidas los pines motor
@@ -19,7 +26,9 @@ void setup(){
 
 void loop(){
   direccion = lectura();                //Se ingresa la direccion deseada
-  enMovimiento();                       //Se realiza el movimiento requerido
+  if(direccion >= 49 && direccion <=52){
+  	enMovimiento();  				//Se realiza el movimiento requerido 
+  }
 }
 
 char lectura(){
@@ -28,7 +37,6 @@ char lectura(){
   Serial.println("2-Girar derecha.");
   Serial.println("3-Girar izquierda.");
   Serial.println("4-Atras.");
-  Serial.println("5-Detener.");
   while (!Serial.available());{
   	direccion = Serial.read();
     Serial.println();
@@ -77,13 +85,6 @@ void enMovimiento(){
   Serial.println("****COLISION****");
   Serial.println("El auto a parado");
   Serial.println();
-}
-
-void motorSetup(){
-  pinMode(pin1, OUTPUT);
-  pinMode(pin2, OUTPUT);
-  pinMode(pin3, OUTPUT);
-  pinMode(pin4, OUTPUT);
 }
 
 void forward(){
